@@ -30,10 +30,10 @@ void ui::render() {
 
     ImGui::Begin(window_title, &globals.active, window_flags);
     {
-		if (ImGui::BeginPopupModal((popup_title + ("##popup")).c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings)) {
+		if (ImGui::BeginPopupModal((popup_title + _("##popup")).c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings)) {
 			ImGui::Text(popup_text.c_str());
 
-			if (!nonClosablePopup && ImGui::Button("Ok", ImVec2(-1.0f, 0.0f))) {
+			if (!nonClosablePopup && ImGui::Button(_("Ok"), ImVec2(-1.0f, 0.0f))) {
 				ImGui::CloseCurrentPopup();
 
 				if (exit_after_popup)
@@ -49,24 +49,24 @@ void ui::render() {
 					if (globals.runningLogin) {
 						const auto r = 8.0f;
 						ImGui::SetCursorPos(ImVec2(ImGui::GetWindowContentRegionMax().x * 0.5f - r, ImGui::GetWindowContentRegionMax().y * 0.5f - r));
-						ImGui::Spinner(("##Update Spinner"), r, 3.0f, ImGui::ColorConvertFloat4ToU32(ImGui::GetStyleColorVec4(ImGuiCol_Text)));
+						ImGui::Spinner(_("##Update Spinner"), r, 3.0f, ImGui::ColorConvertFloat4ToU32(ImGui::GetStyleColorVec4(ImGuiCol_Text)));
 						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 1.0f, 1.0f, (sin(ImGui::GetTime() * IM_PI * 2.0f) * 0.5f + 0.5f) * 0.5f + 0.5f));
 						if (globals.loginSuccess) {
-							const auto text_size = ImGui::CalcTextSize(("checking for updates"));
+							const auto text_size = ImGui::CalcTextSize(_("checking for updates"));
 							ImGui::SetCursorPos(ImVec2(ImGui::GetWindowContentRegionMax().x * 0.5f - text_size.x * 0.5f, ImGui::GetWindowContentRegionMax().y * 0.5f + r + 8.0f));
-							ImGui::Text(("checking for updates"));
+							ImGui::Text(_("checking for updates"));
 							ImGui::PopStyleColor();
 						}
 						else {
-							const auto text_size = ImGui::CalcTextSize(("authenticating"));
+							const auto text_size = ImGui::CalcTextSize(_("authenticating"));
 							ImGui::SetCursorPos(ImVec2(ImGui::GetWindowContentRegionMax().x * 0.5f - text_size.x * 0.5f, ImGui::GetWindowContentRegionMax().y * 0.5f + r + 8.0f));
-							ImGui::Text(("authenticating"));
+							ImGui::Text(_("authenticating"));
 							ImGui::PopStyleColor();
 						}
 					}
 					else {
-						ImGui::Text("welcome to nor.cat");
-						if (ImGui::Button("login") && !globals.runningLogin) {
+						ImGui::Text(_("welcome to nor.cat"));
+						if (ImGui::Button(_("login")) && !globals.runningLogin) {
 							std::thread([]() {
 								globals.runningLogin = true;
 
@@ -82,7 +82,7 @@ void ui::render() {
 									globals.runningLogin = false;
 									std::thread([]() { //Error Popup
 										popup_text = login_resp.message;
-										popup_title = ("error");
+										popup_title = _("error");
 										open_popup = true;
 										exit_after_popup = true;
 										nonClosablePopup = false;
@@ -93,7 +93,7 @@ void ui::render() {
 
 										globals.loginSuccess = true;
 										globals.runningLogin = false;
-										moduleItems.push_back("None"); //Adding modules to Combo List
+										moduleItems.push_back(_("None")); //Adding modules to Combo List
 										for (auto& cur_mod : modules) {
 											moduleItems.push_back(cur_mod.name);
 										}
@@ -114,17 +114,17 @@ void ui::render() {
 				if (globals.runningInjection) {
 					const auto r = 8.0f;
 					ImGui::SetCursorPos(ImVec2(ImGui::GetWindowContentRegionMax().x * 0.5f - r, ImGui::GetWindowContentRegionMax().y * 0.5f - r));
-					ImGui::Spinner(("##Update Spinner"), r, 3.0f, ImGui::ColorConvertFloat4ToU32(ImGui::GetStyleColorVec4(ImGuiCol_Text)));
+					ImGui::Spinner(_("##Update Spinner"), r, 3.0f, ImGui::ColorConvertFloat4ToU32(ImGui::GetStyleColorVec4(ImGuiCol_Text)));
 					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 1.0f, 1.0f, (sin(ImGui::GetTime() * IM_PI * 2.0f) * 0.5f + 0.5f) * 0.5f + 0.5f));
-					const auto text_size = ImGui::CalcTextSize(("injecting module"));
+					const auto text_size = ImGui::CalcTextSize(_("injecting module"));
 					ImGui::SetCursorPos(ImVec2(ImGui::GetWindowContentRegionMax().x * 0.5f - text_size.x * 0.5f, ImGui::GetWindowContentRegionMax().y * 0.5f + r + 8.0f));
-					ImGui::Text(("injecting module"));
+					ImGui::Text(_("injecting module"));
 					ImGui::PopStyleColor();
 				}
 
 				else if (globals.loginSuccess) {
 
-					ImGui::Text("welcome to nor.cat, %s", std::string(get_username()).data());
+					ImGui::Text(_("welcome to nor.cat, %s"), std::string(get_username()).data());
 					ImGui::NewLine();
 
 					if (!selectedItem) {
@@ -134,23 +134,23 @@ void ui::render() {
 					}
 
 					else {
-						ImGui::Text("status:\t%s", modules[selectedItem - 1].status);
-						ImGui::Text("target:\t%s"  , modules[selectedItem - 1 ].target );
-						ImGui::Text("version:\t%s", modules[selectedItem - 1].version);
+						ImGui::Text(_("status:\t%s"), modules[selectedItem - 1].status);
+						ImGui::Text(_("target:\t%s")  , modules[selectedItem - 1 ].target );
+						ImGui::Text(_("version:\t%s"), modules[selectedItem - 1].version);
 					}
 					ImGui::NewLine();
 					ImGui::NewLine();
 					ImGui::Separator();
 
 
-					ImGui::Combo("module", &selectedItem, moduleItems.data(), moduleItems.size());
+					ImGui::Combo(_("module"), &selectedItem, moduleItems.data(), moduleItems.size());
 
 
-					if (ImGui::Button("inject", ImVec2(-1.0f, 0.0f)) && !globals.runningInjection && !globals.injectSuccess) {
+					if (ImGui::Button(_("inject"), ImVec2(-1.0f, 0.0f)) && !globals.runningInjection && !globals.injectSuccess) {
 						if (!selectedItem) {
 							std::thread([]() { //Invalid Module Popup
-								popup_text = "error";
-								popup_title = ("please select a valid module");
+								popup_text = _("error");
+								popup_title = _("please select a valid module");
 								open_popup = true;
 								nonClosablePopup = false;
 								exit_after_popup = false;
@@ -171,7 +171,7 @@ void ui::render() {
 										dbg_print("Successfully Injected Binary!\nResponse: %s\n", inject_resp.message);
 										std::thread([]() { //Success popup
 											popup_text = inject_resp.message;
-											popup_title = ("successfully injected");
+											popup_title = _("successfully injected");
 											open_popup = true;
 											exit_after_popup = true;
 											nonClosablePopup = false;
@@ -181,7 +181,7 @@ void ui::render() {
 										dbg_print("Error Injecting Binary!\nResponse: %s\n", inject_resp.message);
 										std::thread([]() { //Error popup
 											popup_text = inject_resp.message;
-											popup_title = ("injection failed");
+											popup_title = _("injection failed");
 											open_popup = true;
 											exit_after_popup = true;
 											nonClosablePopup = false;
@@ -194,8 +194,8 @@ void ui::render() {
 				}
 				else {
 					std::thread([]() { //Error popup
-						popup_text = "error";
-						popup_title = ("invalid user");
+						popup_text = _("error");
+						popup_title = _("invalid user");
 						nonClosablePopup = false;
 						exit_after_popup = false;
 					}).detach();
@@ -206,7 +206,7 @@ void ui::render() {
 
     }
 	if (open_popup_next_frame) {
-		ImGui::OpenPopup((popup_title + ("##popup")).c_str());
+		ImGui::OpenPopup((popup_title + _("##popup")).c_str());
 		open_popup_next_frame = false;
 	}
 

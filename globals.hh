@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "PH.hpp"
+#include "include/xorstr.hpp"
 
 #ifdef _DEBUG
 #define dbg_print(s, ...) printf(s, __VA_ARGS__)

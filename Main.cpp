@@ -4,7 +4,7 @@
 #include <thread>
 #include <chrono>
 #include "PH.hpp"
-
+#include "include/xorstr.hpp"
 
 
 void programTimeout();
@@ -26,10 +26,10 @@ int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #endif
 
     dbg_print("Attempting to load PH library...\n");
-    auto PH = LoadLibraryA("ph.dll");
+    auto PH = LoadLibraryA(_("ph.dll"));
 
     if (!PH) {
-        MessageBoxA(NULL, "Could not initialize dependencies!", NULL, NULL);
+        MessageBoxA(NULL, _("Could not initialize dependencies!"), NULL, NULL);
         exit(-1);
     }
   
